@@ -1,0 +1,54 @@
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+import time
+
+# Initialize a DataFrame to store the runners' data
+results = []
+
+# Define the base URL pattern
+base_url = "https://results.nyrr.org/event/M2024/result/{}"
+
+# Loop through all bib numbers (1 to 55524)
+for bib in range(1, 55525):
+    try:
+        # Fetch the runner's page
+        url = base_url.format(bib)
+        response = requests.get(url)
+
+        # Check if the request was successful
+        if response.status_code != 200:
+            print(f"Could not retrieve data for bib number {bib}")
+            continue
+
+        # Parse the HTML content
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Initialize a dictionary to hold this runner's split data
+        runner_data = {'bib_number': bib}
+
+        # Find all split labels and times
+        splits = soup.find_all("div", class_="form-group-item")
+        for split in splits:
+            split_title = split.find("label", class_="ng-binding").text.strip()
+            split_time = split.find("span", class_="label-value").text.strip()
+            runner_data[split_title] = split_time
+
+        # Append the runner's data to the results list
+        results.append(runner_data)
+
+        # Print progress every 100 runners
+        if bib % 100 == 0:
+            print(f"Processed bib number {bib}")
+
+        # Add a short delay to avoid overwhelming the server
+        time.sleep(0.5)
+
+    except Exception as e:
+        print(f"An error occurred with bib number {bib}: {e}")
+
+# Convert the results list to a DataFrame and save it to CSV
+df = pd.DataFrame(results)
+df.to_csv("nyc_marathon_splits.csv", index=False)
+
+print("Scraping complete. Data saved to nyc_marathon_splits.csv")
