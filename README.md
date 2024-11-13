@@ -1,4 +1,4 @@
-# NYCMarathonViz
+# NYC Marathon Analysis
 An exploration of the 2024 TCS NYC Marathon, showcasing global runner statistics, pacing demographics, and course insights. 
 
 
