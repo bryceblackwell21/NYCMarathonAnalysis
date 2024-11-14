@@ -1,6 +1,3 @@
-# NYC Marathon Analysis
-An exploration of the 2024 TCS NYC Marathon, showcasing global runner statistics, pacing demographics, and course insights. 
-
 # 🏃‍♂️ TCS 2024 NYC Marathon Analysis
 
 An analysis of runner data from the 2024 TCS NYC Marathon, focusing on split times, demographics, and course challenges. This project combines web scraping techniques with data visualization to uncover insights about runner performance across different sections of the course.
